@@ -12,7 +12,7 @@
         "osPlatform": "Linux"
       },
       {
-        "name": "SSHCredntials",
+        "name": "SSHCredentials",
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
           "authenticationType": "Authentication type",
@@ -37,24 +37,13 @@
     "steps": [
       {
         "name": "panvnetconfig",
-        "label": "Storage and Networking",
+        "label": "Networking",
         "subLabel": {
           "preValidation": "New or existing resources",
           "postValidation": "Done"
         },
-        "bladeTitle": "Storage and Networking",
+        "bladeTitle": "Networking",
         "elements": [
-          {
-            "name": "newStorageAccount",
-            "type": "Microsoft.Storage.StorageAccountSelector",
-            "label": "Storage Account Name",
-            "defaultValue": {
-              "type": "Standard_LRS"
-            },
-            "constraints": {
-              "allowedTypes": ["Standard_LRS","Standard_GRS","Standard_RAGRS"]
-            }
-          },
           {
             "name": "vnetSpec",
             "type": "Microsoft.Network.VirtualNetworkCombo",
@@ -138,6 +127,19 @@
         },
         "bladeTitle": "VM-Series Configuration",
         "elements": [
+{
+  "name": "element1",
+  "type": "Microsoft.Network.AvailabilityZoneDropdown",
+  "label": "Availability zone dropdown label",
+  "toolTip": "This is the tooltip for availability zones",
+  "defaultValue": "None",
+  "constraints": {
+    "required": "true"
+  },
+  "options": {
+  },
+  "visible": true
+},
           {
             "name": "dnsNameForPublicIP",
             "type": "Microsoft.Network.PublicIpAddressCombo",
@@ -285,9 +287,12 @@
             "allowedSizes": [
               "Standard_D3",
               "Standard_D3_v2",
+              "Standard_DS3_v2",
               "Standard_D4",
               "Standard_D4_v2",
+              "Standard_DS4_v2",
               "Standard_D5_v2",
+              "Standard_DS5_v2",
               "Standard_A4"
             ]
           },
@@ -303,18 +308,14 @@
     ],
     "outputs": {
       "location": "[location()]",
-      "storageAccountName": "[steps('panvnetconfig').newStorageAccount.name]",
-      "storageAccountType": "[steps('panvnetconfig').newStorageAccount.type]",
-      "storageAccountNewOrExisting" : "[steps('panvnetconfig').newStorageAccount.newOrExisting]",
-      "storageAccountExistingRG": "[steps('panvnetconfig').newStorageAccount.resourceGroup]",
       "publicIPAddressName": "[steps('VMSeriesConfig').dnsNameForPublicIP.domainNameLabel]",
-      "PublicIPNewOrExisting": "[steps('VMSeriesConfig').dnsNameForPublicIP.newOrExistingOrNone]",
-      "PublicIPRGName": "[steps('VMSeriesConfig').dnsNameForPublicIP.resourceGroup]",
+      "publicIPNewOrExisting": "[steps('VMSeriesConfig').dnsNameForPublicIP.newOrExistingOrNone]",
+      "publicIPAllocationMethod": "[steps('VMSeriesConfig').dnsNameForPublicIP.publicIPAllocationMethod]",
+      "publicIPRGName": "[steps('VMSeriesConfig').dnsNameForPublicIP.resourceGroup]",
       "vmName": "[steps('VMSeriesConfig').vmName]",
       "adminUsername": "[basics('adminUsername')]",
-      "adminPassword": "[basics('SSHCredntials').password]",
-      "authenticationType": "[basics('SSHCredntials').authenticationType]",
-      "sshKey": "[basics('SSHCredntials').sshPublicKey]",
+      "authenticationType": "[basics('SSHCredentials').authenticationType]",
+      "adminPasswordOrKey": "[coalesce(basics('SSHCredentials').password, basics('SSHCredentials').sshPublicKey)]",
       "vmSize": "[steps('VMSeriesConfig').vmSize]",
       "imageVersion": "[steps('VMSeriesConfig').imageVersion]",
       "srcIPInboundNSG": "[steps('panvnetconfig').srcIPInboundNSG]",
@@ -332,6 +333,7 @@
       "subnet1StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet1.startAddress]",
       "subnet2StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet2.startAddress]",
       "bootstrap": "[coalesce(steps('VMSeriesConfig').bootstrap, 'no')]",
+      "zoneinfo": "[steps('VMSeriesConfig').element1]",
       "customData": "[concat('storage-account=', coalesce(steps('VMSeriesConfig').customstorageaccount, 'None'), ',access-key=', coalesce(steps('VMSeriesConfig').customaccesskey, 'None'), ',file-share=', coalesce(steps('VMSeriesConfig').customfileshare, 'None'), ',share-directory=', coalesce(steps('VMSeriesConfig').customsharedirectory, 'None'))]"
     }
   }
