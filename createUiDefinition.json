@@ -140,6 +140,27 @@
   },
   "visible": true
 },
+{
+                        "name": "availSet",
+                        "type": "Microsoft.Network.AvailabilitySetSelector",
+                        "label": "Availability Set",
+                        "toolTip": "Availability set tooltip",
+                        "defaultValue": {
+                            "name": "availabilityset01",
+                            "faultDomains": 2,
+                            "updateDomains": 5,
+                            "alignedAvailabilitySet": true
+                        },
+                        "constraints": {
+                            "required": true
+                        },
+                        "options": {
+                            "hideNone": false,
+                            "hideExisting": false,
+                            "onlyAligned": false
+                        },
+                        "visible": true
+},
           {
             "name": "dnsNameForPublicIP",
             "type": "Microsoft.Network.PublicIpAddressCombo",
@@ -334,6 +355,7 @@
       "subnet2StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet2.startAddress]",
       "bootstrap": "[coalesce(steps('VMSeriesConfig').bootstrap, 'no')]",
       "zoneinfo": "[steps('VMSeriesConfig').element1]",
+      "avsetinfo": "[steps('VMSeriesConfig').availSet]",
       "customData": "[concat('storage-account=', coalesce(steps('VMSeriesConfig').customstorageaccount, 'None'), ',access-key=', coalesce(steps('VMSeriesConfig').customaccesskey, 'None'), ',file-share=', coalesce(steps('VMSeriesConfig').customfileshare, 'None'), ',share-directory=', coalesce(steps('VMSeriesConfig').customsharedirectory, 'None'))]"
     }
   }
