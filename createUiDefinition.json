@@ -127,40 +127,21 @@
         },
         "bladeTitle": "VM-Series Configuration",
         "elements": [
-{
-  "name": "element1",
-  "type": "Microsoft.Network.AvailabilityZoneDropdown",
-  "label": "Availability zone dropdown label",
-  "toolTip": "This is the tooltip for availability zones",
-  "defaultValue": "None",
-  "constraints": {
-    "required": "true"
-  },
-  "options": {
-  },
-  "visible": true
-},
-{
-                        "name": "availSet",
-                        "type": "Microsoft.Network.AvailabilitySetSelector",
-                        "label": "Availability Set",
-                        "toolTip": "Availability set tooltip",
-                        "defaultValue": {
-                            "name": "availabilityset01",
-                            "faultDomains": 2,
-                            "updateDomains": 5,
-                            "alignedAvailabilitySet": true
-                        },
-                        "constraints": {
-                            "required": true
-                        },
-                        "options": {
-                            "hideNone": false,
-                            "hideExisting": false,
-                            "onlyAligned": false
-                        },
-                        "visible": true
-},
+          {
+            "name": "availSet",
+            "type": "Microsoft.Network.AvailabilitySetSelector",
+            "label": "Availability Set",
+            "toolTip": "Availability set tooltip",
+            "constraints": {
+              "required": false
+            },
+            "options": {
+              "hideNone": false,
+              "hideExisting": false,
+              "onlyAligned": false
+            },
+            "visible": true
+          },
           {
             "name": "dnsNameForPublicIP",
             "type": "Microsoft.Network.PublicIpAddressCombo",
