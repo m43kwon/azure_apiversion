@@ -128,21 +128,6 @@
         "bladeTitle": "VM-Series Configuration",
         "elements": [
           {
-            "name": "availSet",
-            "type": "Microsoft.Network.AvailabilitySetSelector",
-            "label": "Availability Set",
-            "toolTip": "Availability set tooltip",
-            "constraints": {
-              "required": false
-            },
-            "options": {
-              "hideNone": false,
-              "hideExisting": false,
-              "onlyAligned": false
-            },
-            "visible": true
-          },
-          {
             "name": "dnsNameForPublicIP",
             "type": "Microsoft.Network.PublicIpAddressCombo",
             "label": {
@@ -166,6 +151,27 @@
               "hideExisting" : false
             }
           },
+                    {
+                        "name": "availSet",
+                        "type": "Microsoft.Network.AvailabilitySetSelector",
+                        "label": "Availability Set",
+                        "toolTip": "Availability set tooltip",
+                        "defaultValue": {
+                            "name": "availabilityset01",
+                            "faultDomains": 2,
+                            "updateDomains": 5,
+                            "alignedAvailabilitySet": true
+                        },
+                        "constraints": {
+                            "required": true
+                        },
+                        "options": {
+                            "hideNone": false,
+                            "hideExisting": true,
+                            "onlyAligned": true
+                        },
+                        "visible": true
+                    },
         {
           "name": "vmName",
           "type": "Microsoft.Common.TextBox",
@@ -190,16 +196,16 @@
                 "value": "latest"
               },
               {
+                "label": "9.0.0",
+                "value": "9.0.0"
+              },
+              {
                 "label": "8.1.0",
                 "value": "8.1.0"
               },
               {
                 "label": "8.0.0",
                 "value": "8.0.0"
-              },
-              {
-                "label": "7.1.1",
-                "value": "7.1.1"
               }
             ]
           }
@@ -288,13 +294,19 @@
           "constraints": {
             "allowedSizes": [
               "Standard_D3",
-              "Standard_D3_v2",
-              "Standard_DS3_v2",
               "Standard_D4",
+              "Standard_D3_v2",
               "Standard_D4_v2",
-              "Standard_DS4_v2",
               "Standard_D5_v2",
+              "Standard_D3_v3",
+              "Standard_D4_v3",
+              "Standard_D16_v3",
+              "Standard_DS3_v2",
+              "Standard_DS4_v2",
               "Standard_DS5_v2",
+              "Standard_DS3_v3",
+              "Standard_DS4_v3",
+              "Standard_DS16_v3",
               "Standard_A4"
             ]
           },
@@ -334,9 +346,10 @@
       "subnet0StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet0.startAddress]",
       "subnet1StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet1.startAddress]",
       "subnet2StartAddress": "[steps('panvnetconfig').vnetSpec.subnets.subnet2.startAddress]",
+      "availabilitySetName": "[coalesce(steps('VMSeriesConfig').availSet.name, 'None')]",
+      "availabilitySetPlatformFaultDomainCount": "[steps('VMSeriesConfig').availSet.faultDomains]",
+      "availabilitySetPlatformUpdateDomainCount": "[steps('VMSeriesConfig').availSet.updateDomains]",
       "bootstrap": "[coalesce(steps('VMSeriesConfig').bootstrap, 'no')]",
-      "zoneinfo": "[steps('VMSeriesConfig').element1]",
-      "avsetinfo": "[steps('VMSeriesConfig').availSet]",
       "customData": "[concat('storage-account=', coalesce(steps('VMSeriesConfig').customstorageaccount, 'None'), ',access-key=', coalesce(steps('VMSeriesConfig').customaccesskey, 'None'), ',file-share=', coalesce(steps('VMSeriesConfig').customfileshare, 'None'), ',share-directory=', coalesce(steps('VMSeriesConfig').customsharedirectory, 'None'))]"
     }
   }
