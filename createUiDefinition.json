@@ -157,7 +157,7 @@
                         "label": "Availability Set",
                         "toolTip": "Availability set tooltip",
                         "defaultValue": {
-                            "name": "availabilityset01",
+                            "name": "",
                             "faultDomains": 2,
                             "updateDomains": 5,
                             "alignedAvailabilitySet": true
